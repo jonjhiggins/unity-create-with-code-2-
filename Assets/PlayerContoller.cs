@@ -39,6 +39,8 @@ public class PlayerContoller : MonoBehaviour
         } else if (collision.gameObject.CompareTag("Obstacle"))
         {
             Debug.Log("Game over!");
+            playerAnimator.SetBool("Death_b", true);
+            playerAnimator.SetInteger("DeathType_int", 1);
             gameOver = true;
         }
     }

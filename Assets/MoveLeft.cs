@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class MoveLeft : MonoBehaviour
 {
-    private PlayerContoller playerControllerScript;
     private float leftBounds = 15;
-    private SpeedManager speedManager;
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerContoller>();
-        speedManager = GameObject.Find("SpeedManager").GetComponent<SpeedManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerControllerScript.gameOver)
+        if (gameManager.GameOver)
         {
             return;
         }
-        transform.Translate(Vector3.left * Time.deltaTime * speedManager.GetSpeed());
+        transform.Translate(Vector3.left * Time.deltaTime * gameManager.Speed);
 
         if (transform.position.x < -leftBounds && gameObject.CompareTag("Obstacle"))
         {

@@ -8,7 +8,6 @@ public class PlayerContoller : MonoBehaviour
     private Rigidbody playerRigidBody;
     public float jumpForce = 10;
     public float gravityModifier = 1;
-    public bool gameOver = false;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
     public AudioClip jumpSound;
@@ -16,8 +15,7 @@ public class PlayerContoller : MonoBehaviour
     private Animator playerAnimator;
     private AudioSource playerAudio;
     private int jumpCount = 0;
-    private SpeedManager speedManager;
-    private ScoreManager scoreManager;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -26,14 +24,13 @@ public class PlayerContoller : MonoBehaviour
         playerRigidBody = gameObject.GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
-        speedManager = GameObject.Find("SpeedManager").GetComponent<SpeedManager>();
-        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2 && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2 && !gameManager.GameOver)
         {
             playerRigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumpCount += 1;
@@ -44,12 +41,12 @@ public class PlayerContoller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speedManager.IncreaseSpeed();
+            gameManager.IsDashing = true;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speedManager.DecreaseSpeed();
+            gameManager.IsDashing = false;
         }
     }
 
@@ -58,20 +55,20 @@ public class PlayerContoller : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             jumpCount = 0;
-            if (!gameOver)
+            if (!gameManager.GameOver)
             {
                 dirtParticle.Play();
             }
-        } else if (collision.gameObject.CompareTag("Obstacle"))
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
         {
             Debug.Log("Game over!");
             explosionParticle.Play();
             playerAnimator.SetBool("Death_b", true);
             playerAnimator.SetInteger("DeathType_int", 1);
-            gameOver = true;
+            gameManager.GameOver = true;
             playerAudio.PlayOneShot(crashSound, 1.0f);
             dirtParticle.Stop();
-            scoreManager.SetGameOver();
         }
     }
 }

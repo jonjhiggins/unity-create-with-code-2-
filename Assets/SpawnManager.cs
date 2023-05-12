@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void SpawnObstacle()
     {
-        if (gameManager.GameOver)
+        if (gameManager.GameOver || !gameManager.PlayerReady)
         {
             return;
         }

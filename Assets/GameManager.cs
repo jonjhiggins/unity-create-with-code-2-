@@ -7,12 +7,16 @@ public class GameManager : MonoBehaviour
 {
     public bool IsDashing { get; set; }
     public bool GameOver { get; set; }
-    private float normalSpeed = 30;
+    public bool PlayerReady { get; set; }
+    private float _normalSpeed
+    {
+        get => PlayerReady ? 30 : 0;
+    }
     public float Speed
     {
-        get => IsDashing ? normalSpeed * 2 : normalSpeed;
+        get => IsDashing ? _normalSpeed * 2 : _normalSpeed;
     }
-    private int score;
+    private int _score;
 
     void Start()
     {
@@ -21,11 +25,11 @@ public class GameManager : MonoBehaviour
 
     void ShowAndIncreaseScore()
     {
-        if (GameOver)
+        if (GameOver || !PlayerReady)
         {
             return;
         }
-        score += IsDashing ? 2 : 1;
-        Debug.Log($"Score: {score}");
+        _score += IsDashing ? 2 : 1;
+        Debug.Log($"Score: {_score}");
     }
 }

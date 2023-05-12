@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MoveLeft : MonoBehaviour
 {
-    public float moveSpeed = 30;
     private PlayerContoller playerControllerScript;
     private float leftBounds = 15;
+    private SpeedManager speedManager;
     // Start is called before the first frame update
     void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerContoller>();
+        speedManager = GameObject.Find("SpeedManager").GetComponent<SpeedManager>();
     }
 
     // Update is called once per frame
@@ -20,7 +21,7 @@ public class MoveLeft : MonoBehaviour
         {
             return;
         }
-        transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
+        transform.Translate(Vector3.left * Time.deltaTime * speedManager.GetSpeed());
 
         if (transform.position.x < -leftBounds && gameObject.CompareTag("Obstacle"))
         {

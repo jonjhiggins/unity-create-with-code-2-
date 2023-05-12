@@ -8,7 +8,6 @@ public class PlayerContoller : MonoBehaviour
     private Rigidbody playerRigidBody;
     public float jumpForce = 10;
     public float gravityModifier = 1;
-    private bool isOnGround = true;
     public bool gameOver = false;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
@@ -17,6 +16,8 @@ public class PlayerContoller : MonoBehaviour
     private Animator playerAnimator;
     private AudioSource playerAudio;
     private int jumpCount = 0;
+    private SpeedManager speedManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +25,8 @@ public class PlayerContoller : MonoBehaviour
         playerRigidBody = gameObject.GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
-       
+        speedManager = GameObject.Find("SpeedManager").GetComponent<SpeedManager>();
+
     }
 
     // Update is called once per frame
@@ -37,6 +39,16 @@ public class PlayerContoller : MonoBehaviour
             playerAnimator.SetTrigger("Jump_trig");
             dirtParticle.Stop();
             playerAudio.PlayOneShot(jumpSound, 1.0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speedManager.IncreaseSpeed();
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            speedManager.DecreaseSpeed();
         }
     }
 

@@ -17,6 +17,7 @@ public class PlayerContoller : MonoBehaviour
     private AudioSource playerAudio;
     private int jumpCount = 0;
     private SpeedManager speedManager;
+    private ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class PlayerContoller : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
         speedManager = GameObject.Find("SpeedManager").GetComponent<SpeedManager>();
-
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -70,6 +71,7 @@ public class PlayerContoller : MonoBehaviour
             gameOver = true;
             playerAudio.PlayOneShot(crashSound, 1.0f);
             dirtParticle.Stop();
+            scoreManager.SetGameOver();
         }
     }
 }
